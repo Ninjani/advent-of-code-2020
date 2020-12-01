@@ -2,13 +2,13 @@ use std::cmp::Ordering;
 
 #[aoc_generator(day1)]
 pub fn generate(input: &str) -> Vec<isize> {
-    input.split('\n').map(|i| i.parse().unwrap()).collect()
+    let mut array: Vec<_> = input.split('\n').map(|i| i.parse().unwrap()).collect();
+    array.sort();
+    array
 }
 
 #[inline]
-fn two_sum(array: &[isize], target: isize) -> Option<(isize, isize)> {
-    let mut sorted_array = array.to_vec();
-    sorted_array.sort();
+fn two_sum(sorted_array: &[isize], target: isize) -> Option<(isize, isize)> {
     let length = sorted_array.len();
     let (mut start, mut end) = (0, length - 1);
     while start < length {
@@ -42,9 +42,7 @@ pub fn solve_part1(input: &[isize]) -> isize {
 }
 
 #[inline]
-fn three_sum(array: &[isize], target: isize) -> Option<(isize, isize, isize)> {
-    let mut sorted_array = array.to_vec();
-    sorted_array.sort();
+fn three_sum(sorted_array: &[isize], target: isize) -> Option<(isize, isize, isize)> {
     let length = sorted_array.len();
     for i in 0..=(length - 2) {
         let a = sorted_array[i];
