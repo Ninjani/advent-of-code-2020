@@ -2,22 +2,20 @@ use std::cmp::Ordering;
 
 #[aoc_generator(day1)]
 pub fn generate(input: &str) -> Vec<isize> {
-    let mut array: Vec<_> = input
-        .split('\n')
-        .map(|i| i.parse::<isize>().unwrap())
-        .collect();
-    array.sort();
-    array
+    input.split('\n').map(|i| i.parse().unwrap()).collect()
 }
 
-fn two_sum(sorted_array: &[isize], target: isize) -> Option<(usize, usize)> {
+#[inline]
+fn two_sum(array: &[isize], target: isize) -> Option<(isize, isize)> {
+    let mut sorted_array: Vec<_> = array.iter().cloned().collect();
+    sorted_array.sort();
     let length = sorted_array.len();
     let (mut start, mut end) = (0, length - 1);
     while start < length {
         let sum = sorted_array[start] + sorted_array[end];
         match sum.cmp(&target) {
             Ordering::Equal => {
-                return Some((start, end));
+                return Some((sorted_array[start], sorted_array[end]));
             }
             Ordering::Greater => {
                 if end >= 1 {
@@ -40,10 +38,13 @@ fn two_sum(sorted_array: &[isize], target: isize) -> Option<(usize, usize)> {
 #[aoc(day1, part1)]
 pub fn solve_part1(input: &[isize]) -> isize {
     let (i, j) = two_sum(input, 2020).unwrap();
-    input[i] * input[j]
+    i * j
 }
 
-fn three_sum(sorted_array: &[isize], target: isize) -> Option<(usize, usize, usize)> {
+#[inline]
+fn three_sum(array: &[isize], target: isize) -> Option<(isize, isize, isize)> {
+    let mut sorted_array: Vec<_> = array.iter().cloned().collect();
+    sorted_array.sort();
     let length = sorted_array.len();
     for i in 0..=(length - 2) {
         let a = sorted_array[i];
@@ -51,7 +52,9 @@ fn three_sum(sorted_array: &[isize], target: isize) -> Option<(usize, usize, usi
         while start < end {
             let sum = a + sorted_array[start] + sorted_array[end];
             match sum.cmp(&target) {
-                Ordering::Equal => return Some((i, start, end)),
+                Ordering::Equal => {
+                    return Some((sorted_array[i], sorted_array[start], sorted_array[end]))
+                }
                 Ordering::Greater => {
                     end -= 1;
                 }
@@ -67,7 +70,7 @@ fn three_sum(sorted_array: &[isize], target: isize) -> Option<(usize, usize, usi
 #[aoc(day1, part2)]
 pub fn solve_part2(input: &[isize]) -> isize {
     let (i, j, k) = three_sum(&input, 2020).unwrap();
-    input[i] * input[j] * input[k]
+    i * j * k
 }
 
 #[cfg(test)]
