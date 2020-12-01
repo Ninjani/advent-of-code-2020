@@ -7,7 +7,7 @@ pub fn generate(input: &str) -> Vec<isize> {
 
 #[inline]
 fn two_sum(array: &[isize], target: isize) -> Option<(isize, isize)> {
-    let mut sorted_array: Vec<_> = array.iter().cloned().collect();
+    let mut sorted_array = array.to_vec();
     sorted_array.sort();
     let length = sorted_array.len();
     let (mut start, mut end) = (0, length - 1);
@@ -43,7 +43,7 @@ pub fn solve_part1(input: &[isize]) -> isize {
 
 #[inline]
 fn three_sum(array: &[isize], target: isize) -> Option<(isize, isize, isize)> {
-    let mut sorted_array: Vec<_> = array.iter().cloned().collect();
+    let mut sorted_array = array.to_vec();
     sorted_array.sort();
     let length = sorted_array.len();
     for i in 0..=(length - 2) {
