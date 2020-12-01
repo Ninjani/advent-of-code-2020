@@ -1,14 +1,19 @@
 use std::cmp::Ordering;
 
+/// With cargo aoc bench:
+/// Part 1 (min, mean, max): 2.8544 us 3.2331 us 3.7779 us
+/// Part 2 (min, mean, max): 2.9397 us 3.3639 us 3.9143 us
+/// Time does not include parsing, includes sorting
+
 #[aoc_generator(day1)]
 pub fn generate(input: &str) -> Vec<isize> {
-    let mut array: Vec<_> = input.split('\n').map(|i| i.parse().unwrap()).collect();
-    array.sort();
-    array
+    input.split('\n').map(|i| i.parse().unwrap()).collect()
 }
 
 #[inline]
-fn two_sum(sorted_array: &[isize], target: isize) -> Option<(isize, isize)> {
+fn two_sum(array: &[isize], target: isize) -> Option<(isize, isize)> {
+    let mut sorted_array = array.to_vec();
+    sorted_array.sort();
     let length = sorted_array.len();
     let (mut start, mut end) = (0, length - 1);
     while start < length {
@@ -42,7 +47,9 @@ pub fn solve_part1(input: &[isize]) -> isize {
 }
 
 #[inline]
-fn three_sum(sorted_array: &[isize], target: isize) -> Option<(isize, isize, isize)> {
+fn three_sum(array: &[isize], target: isize) -> Option<(isize, isize, isize)> {
+    let mut sorted_array = array.to_vec();
+    sorted_array.sort();
     let length = sorted_array.len();
     for i in 0..=(length - 2) {
         let a = sorted_array[i];
