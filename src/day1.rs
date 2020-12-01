@@ -1,19 +1,19 @@
 use std::cmp::Ordering;
 
 /// With cargo aoc bench:
-/// Part 1 (min, mean, max): 2.8544 us 3.2331 us 3.7779 us
-/// Part 2 (min, mean, max): 2.9397 us 3.3639 us 3.9143 us
-/// Time does not include parsing, includes sorting
+/// Generator (min, mean, max): 8.3311 us 8.4984 us 8.7004 us (includes parsing and sorting)
+/// Part 1 (min, mean, max): 255.26 ns 263.05 ns 273.26 ns
+/// Part 2 (min, mean, max): 171.96 ns 177.29 ns 183.14 ns
 
 #[aoc_generator(day1)]
 pub fn generate(input: &str) -> Vec<isize> {
-    input.split('\n').map(|i| i.parse().unwrap()).collect()
+    let mut array: Vec<isize> = input.split('\n').map(|i| i.parse().unwrap()).collect();
+    array.sort();
+    array
 }
 
 #[inline]
-fn two_sum(array: &[isize], target: isize) -> Option<(isize, isize)> {
-    let mut sorted_array = array.to_vec();
-    sorted_array.sort();
+fn two_sum(sorted_array: &[isize], target: isize) -> Option<(isize, isize)> {
     let length = sorted_array.len();
     let (mut start, mut end) = (0, length - 1);
     while start < length {
@@ -47,9 +47,7 @@ pub fn solve_part1(input: &[isize]) -> isize {
 }
 
 #[inline]
-fn three_sum(array: &[isize], target: isize) -> Option<(isize, isize, isize)> {
-    let mut sorted_array = array.to_vec();
-    sorted_array.sort();
+fn three_sum(sorted_array: &[isize], target: isize) -> Option<(isize, isize, isize)> {
     let length = sorted_array.len();
     for i in 0..=(length - 2) {
         let a = sorted_array[i];
