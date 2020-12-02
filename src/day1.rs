@@ -7,7 +7,7 @@ use std::cmp::Ordering;
 
 #[aoc_generator(day1)]
 pub fn generate(input: &str) -> Vec<isize> {
-    let mut array: Vec<isize> = input.split('\n').map(|i| i.parse().unwrap()).collect();
+    let mut array: Vec<isize> = input.lines().map(|i| i.parse().unwrap()).collect();
     array.sort();
     array
 }
@@ -90,5 +90,11 @@ mod tests {
     fn test_part2() {
         let input = generate("1721\n979\n366\n299\n675\n1456");
         assert_eq!(solve_part2(&input), 241861950);
+    }
+
+    #[test]
+    fn test_half() {
+        let input = generate("1010\n2020\n0\n299\n670\n14");
+        assert_eq!(solve_part1(&input), 0);
     }
 }
