@@ -1,4 +1,10 @@
 use itertools::Itertools;
+use rayon::prelude::*;
+
+/// cargo aoc bench results
+/// Generator Day2/(default) time:   [488.21 us 506.12 us 525.98 us]
+/// Day2 - Part1/(default)  time:   [8.7237 us 9.6007 us 10.721 us]
+/// Day2 - Part2/(default)  time:   [3.2298 us 3.7390 us 4.4165 us]
 
 pub struct Policy {
     n1: usize,
@@ -9,7 +15,7 @@ pub struct Policy {
 #[aoc_generator(day2)]
 pub fn generate(input: &str) -> Vec<(Policy, String)> {
     input
-        .split('\n')
+        .par_lines()
         .map(|line| {
             let (policy, password) = line.trim().split(": ").collect_tuple().unwrap();
             let (numbers, letter) = policy.split(' ').collect_tuple().unwrap();
