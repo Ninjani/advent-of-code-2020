@@ -2,9 +2,9 @@ use itertools::Itertools;
 use rayon::prelude::*;
 
 /// cargo aoc bench results
-/// Generator Day2/(default) time:   [488.21 us 506.12 us 525.98 us]
-/// Day2 - Part1/(default)  time:   [8.7237 us 9.6007 us 10.721 us]
-/// Day2 - Part2/(default)  time:   [3.2298 us 3.7390 us 4.4165 us]
+/// Generator Day2/(default) time:   [430.79 us 444.97 us 460.47 us]
+/// Day2 - Part1/(default)  time:   [8.0064 us 8.2369 us 8.5390 us]
+/// Day2 - Part2/(default)  time:   [2.0522 us 2.0620 us 2.0735 us]
 
 pub struct Policy {
     n1: usize,
@@ -53,15 +53,8 @@ pub fn solve_part2(input: &[(Policy, String)]) -> usize {
         .iter()
         .filter(|(policy, password)| {
             let chars = password.as_bytes();
-            match (chars.get(policy.n1 - 1), chars.get(policy.n2 - 1)) {
-                (Some(a), Some(b)) => {
-                    (a == &policy.letter || b == &policy.letter)
-                        && !(a == &policy.letter && b == &policy.letter)
-                }
-                (Some(a), None) => a == &policy.letter,
-                (None, Some(b)) => b == &policy.letter,
-                (None, None) => false,
-            }
+            (chars.get(policy.n1 - 1) == Some(&policy.letter))
+                != (chars.get(policy.n2 - 1) == Some(&policy.letter))
         })
         .count()
 }
