@@ -1,9 +1,7 @@
-// use rayon::prelude::*;
-
 /// cargo aoc bench results
 /// Generator Day3/(default) time:   [29.794 us 31.944 us 35.957 us]
-/// Day3 - Part1/(default)  time:   [1.9827 us 1.9909 us 2.0002 us]                                    
-/// Day3 - Part2/(default)  time:   [8.9747 us 9.0545 us 9.1651 us]                                    
+/// Day3 - Part1/(default)  time:   [1.6591 us 1.6680 us 1.6802 us]                                    
+/// Day3 - Part2/(default)  time:   [7.6617 us 7.8717 us 8.1627 us]                                    
 
 #[aoc_generator(day3)]
 pub fn generate(input: &str) -> Vec<Vec<bool>> {
@@ -16,10 +14,10 @@ pub fn generate(input: &str) -> Vec<Vec<bool>> {
 #[inline(always)]
 fn check_slope(input: &[Vec<bool>], slope_i: usize, slope_j: usize) -> usize {
     let (max_i, max_j) = (input[0].len(), input.len());
-    (slope_j..=max_j - slope_j)
+    (slope_j..max_j - slope_j + 1)
         .step_by(slope_j)
-        .zip((slope_i..).step_by(slope_i))
-        .filter(|(index_j, index_i)| input[*index_j][*index_i % max_i])
+        .enumerate()
+        .filter(|(index_i, index_j)| input[*index_j][(index_i * slope_i) % max_i])
         .count()
 }
 
