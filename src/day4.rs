@@ -57,25 +57,21 @@ fn validate(passport: &[Option<String>; 7]) -> bool {
                 && hcl.chars().skip(1).all(char::is_alphanumeric)
                 && byr
                     .parse::<u32>()
-                    .map(|byr| byr >= 1920 && byr <= 2002)
-                    .unwrap_or(false)
+                    .map_or(false, |byr| byr >= 1920 && byr <= 2002)
                 && iyr
                     .parse::<u32>()
-                    .map(|iyr| iyr >= 2010 && iyr <= 2020)
-                    .unwrap_or(false)
+                    .map_or(false, |iyr| iyr >= 2010 && iyr <= 2020)
                 && eyr
                     .parse::<u32>()
-                    .map(|eyr| eyr >= 2020 && eyr <= 2030)
-                    .unwrap_or(false)
+                    .map_or(false, |eyr| eyr >= 2020 && eyr <= 2030)
                 && ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"].contains(&ecl.as_str())
-                && hgt[..hgt.len() - 2]
-                    .parse::<u8>()
-                    .map(|height| match &hgt[hgt.len() - 2..] {
+                && hgt[..hgt.len() - 2].parse::<u8>().map_or(false, |height| {
+                    match &hgt[hgt.len() - 2..] {
                         "cm" => height >= 150 && height <= 193,
                         "in" => height >= 59 && height <= 76,
                         _ => false,
-                    })
-                    .unwrap_or(false)
+                    }
+                })
         }
         _ => false,
     }
