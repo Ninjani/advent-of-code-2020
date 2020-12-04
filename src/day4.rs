@@ -53,33 +53,29 @@ fn validate(passport: &[Option<String>; 7]) -> bool {
                 && hcl.len() == 7
                 && pid.len() == 9
                 && pid.chars().all(char::is_numeric)
-                && { ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"].contains(&ecl.as_str()) }
-                && { hcl.as_bytes()[0] == b'#' && hcl.chars().skip(1).all(char::is_alphanumeric) }
-                && {
-                    if let Ok(height) = hgt[..hgt.len() - 2].parse::<u8>() {
-                        match &hgt[hgt.len() - 2..] {
-                            "cm" => height >= 150 && height <= 193,
-                            "in" => height >= 59 && height <= 76,
-                            _ => false,
-                        }
-                    } else {
-                        false
-                    }
-                }
-                && {
-                    if let (Ok(byr), Ok(iyr), Ok(eyr)) =
-                        (byr.parse::<u32>(), iyr.parse::<u32>(), eyr.parse::<u32>())
-                    {
-                        byr >= 1920
-                            && byr <= 2002
-                            && iyr >= 2010
-                            && iyr <= 2020
-                            && eyr >= 2020
-                            && eyr <= 2030
-                    } else {
-                        false
-                    }
-                }
+                && hcl.as_bytes()[0] == b'#'
+                && hcl.chars().skip(1).all(char::is_alphanumeric)
+                && byr
+                    .parse::<u32>()
+                    .map(|byr| byr >= 1920 && byr <= 2002)
+                    .unwrap_or(false)
+                && iyr
+                    .parse::<u32>()
+                    .map(|iyr| iyr >= 2010 && iyr <= 2020)
+                    .unwrap_or(false)
+                && eyr
+                    .parse::<u32>()
+                    .map(|eyr| eyr >= 2020 && eyr <= 2030)
+                    .unwrap_or(false)
+                && ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"].contains(&ecl.as_str())
+                && hgt[..hgt.len() - 2]
+                    .parse::<u8>()
+                    .map(|height| match &hgt[hgt.len() - 2..] {
+                        "cm" => height >= 150 && height <= 193,
+                        "in" => height >= 59 && height <= 76,
+                        _ => false,
+                    })
+                    .unwrap_or(false)
         }
         _ => false,
     }
