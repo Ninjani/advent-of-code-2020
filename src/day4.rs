@@ -2,7 +2,7 @@ use itertools::Itertools;
 
 /// cargo aoc bench results
 /// Day4 - Part1/(default)  time:   [797.15 ns 819.82 ns 843.86 ns]                                    
-/// Day4 - Part2/(default)  time:   [12.722 us 13.344 us 14.071 us]                                    
+/// Day4 - Part2/(default)  time:   [11.430 us 11.807 us 12.207 us]                                    
 /// Generator Day4/(default) time:   [198.48 us 199.66 us 201.10 us]
 
 #[aoc_generator(day4)]
@@ -44,52 +44,44 @@ pub fn solve_part1(input: &[[Option<String>; 7]]) -> usize {
 }
 
 fn validate(passport: &[Option<String>; 7]) -> bool {
-    if passport.iter().all(|val| val.is_some()) {
-        let (byr, iyr, eyr, hgt, hcl, ecl, pid) = (
-            passport[0].as_deref().unwrap(),
-            passport[1].as_deref().unwrap(),
-            passport[2].as_deref().unwrap(),
-            passport[3].as_deref().unwrap(),
-            passport[4].as_deref().unwrap(),
-            passport[5].as_deref().unwrap(),
-            passport[6].as_deref().unwrap(),
-        );
-        byr.len() == 4
-            && iyr.len() == 4
-            && eyr.len() == 4
-            && hgt.len() > 2
-            && hcl.len() == 7
-            && pid.len() == 9
-            && pid.chars().all(char::is_numeric)
-            && { ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"].contains(&ecl) }
-            && { hcl.as_bytes()[0] == b'#' && hcl.chars().skip(1).all(char::is_alphanumeric) }
-            && {
-                if let Ok(height) = hgt[..hgt.len() - 2].parse::<u8>() {
-                    match &hgt[hgt.len() - 2..] {
-                        "cm" => height >= 150 && height <= 193,
-                        "in" => height >= 59 && height <= 76,
-                        _ => false,
+    match passport {
+        [Some(byr), Some(iyr), Some(eyr), Some(hgt), Some(hcl), Some(ecl), Some(pid)] => {
+            byr.len() == 4
+                && iyr.len() == 4
+                && eyr.len() == 4
+                && hgt.len() > 2
+                && hcl.len() == 7
+                && pid.len() == 9
+                && pid.chars().all(char::is_numeric)
+                && { ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"].contains(&ecl.as_str()) }
+                && { hcl.as_bytes()[0] == b'#' && hcl.chars().skip(1).all(char::is_alphanumeric) }
+                && {
+                    if let Ok(height) = hgt[..hgt.len() - 2].parse::<u8>() {
+                        match &hgt[hgt.len() - 2..] {
+                            "cm" => height >= 150 && height <= 193,
+                            "in" => height >= 59 && height <= 76,
+                            _ => false,
+                        }
+                    } else {
+                        false
                     }
-                } else {
-                    false
                 }
-            }
-            && {
-                if let (Ok(byr), Ok(iyr), Ok(eyr)) =
-                    (byr.parse::<u32>(), iyr.parse::<u32>(), eyr.parse::<u32>())
-                {
-                    byr >= 1920
-                        && byr <= 2002
-                        && iyr >= 2010
-                        && iyr <= 2020
-                        && eyr >= 2020
-                        && eyr <= 2030
-                } else {
-                    false
+                && {
+                    if let (Ok(byr), Ok(iyr), Ok(eyr)) =
+                        (byr.parse::<u32>(), iyr.parse::<u32>(), eyr.parse::<u32>())
+                    {
+                        byr >= 1920
+                            && byr <= 2002
+                            && iyr >= 2010
+                            && iyr <= 2020
+                            && eyr >= 2020
+                            && eyr <= 2030
+                    } else {
+                        false
+                    }
                 }
-            }
-    } else {
-        false
+        }
+        _ => false,
     }
 }
 
