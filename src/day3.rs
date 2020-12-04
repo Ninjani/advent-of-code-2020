@@ -17,7 +17,7 @@ fn check_slope(input: &[Vec<bool>], slope_i: usize, slope_j: usize) -> usize {
     (slope_j..max_j - slope_j + 1)
         .step_by(slope_j)
         .enumerate()
-        .filter(|(index_i, index_j)| input[*index_j][(index_i * slope_i) % max_i])
+        .filter(|(index_i, index_j)| input[*index_j][((index_i + 1) * slope_i) % max_i])
         .count()
 }
 
