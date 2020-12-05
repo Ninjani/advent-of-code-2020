@@ -1,49 +1,49 @@
-use itertools::Itertools;
+use smol_str::SmolStr;
 
 /// cargo aoc bench results
-/// Day4 - Part1/(default)  time:   [797.15 ns 819.82 ns 843.86 ns]                                    
-/// Day4 - Part2/(default)  time:   [11.430 us 11.807 us 12.207 us]                                    
-/// Generator Day4/(default) time:   [198.48 us 199.66 us 201.10 us]
+/// Day4 - Part1/(default)  time:   [755.57 ns 759.43 ns 763.90 ns]                                    
+/// Day4 - Part2/(default)  time:   [15.924 us 15.967 us 16.015 us]                                                                        
+/// Generator Day4/(default) time:   [78.467 us 80.364 us 82.480 us]
 
 #[aoc_generator(day4)]
-pub fn generate(input: &str) -> Vec<[Option<String>; 7]> {
-    input
-        .split("\n\n")
-        .map(|entry| {
-            let mut passport = [None, None, None, None, None, None, None];
-            entry
-                .split(|b| b == ':' || b == ' ' || b == '\n')
-                .tuples()
-                .for_each(|(key, value)| {
-                    let index = match key {
-                        "byr" => 0,
-                        "iyr" => 1,
-                        "eyr" => 2,
-                        "hgt" => 3,
-                        "hcl" => 4,
-                        "ecl" => 5,
-                        "pid" => 6,
-                        "cid" => 7,
-                        _ => panic!("Unknown key {}", key),
-                    };
-                    if index < 7 {
-                        passport[index] = Some(value.to_owned());
-                    };
-                });
-            passport
-        })
-        .collect()
+pub fn generate(input: &str) -> Vec<[Option<SmolStr>; 7]> {
+    let mut passports = Vec::new();
+    let mut passport = [None, None, None, None, None, None, None];
+    let mut start = 0;
+    for end in memchr::Memchr2::new(b'\n', b' ', input.as_bytes()) {
+        if start == end {
+            passports.push(passport.clone());
+            passport = [None, None, None, None, None, None, None];
+        } else {
+            let index = match &input[start..start + 3] {
+                "byr" => 0,
+                "iyr" => 1,
+                "eyr" => 2,
+                "hgt" => 3,
+                "hcl" => 4,
+                "ecl" => 5,
+                "pid" => 6,
+                _ => 7,
+            };
+            if index < 7 {
+                passport[index] = Some(SmolStr::new_inline(&input[start + 4..end]));
+            };
+        }
+        start = end + 1;
+    }
+    passports.push(passport);
+    passports
 }
 
 #[aoc(day4, part1)]
-pub fn solve_part1(input: &[[Option<String>; 7]]) -> usize {
+pub fn solve_part1(input: &[[Option<SmolStr>; 7]]) -> usize {
     input
         .iter()
         .filter(|passport| passport.iter().all(|val| val.is_some()))
         .count()
 }
 
-fn validate(passport: &[Option<String>; 7]) -> bool {
+fn validate(passport: &[Option<SmolStr>; 7]) -> bool {
     match passport {
         [Some(byr), Some(iyr), Some(eyr), Some(hgt), Some(hcl), Some(ecl), Some(pid)] => {
             byr.len() == 4
@@ -78,7 +78,7 @@ fn validate(passport: &[Option<String>; 7]) -> bool {
 }
 
 #[aoc(day4, part2)]
-pub fn solve_part2(input: &[[Option<String>; 7]]) -> usize {
+pub fn solve_part2(input: &[[Option<SmolStr>; 7]]) -> usize {
     input.iter().filter(|passport| validate(passport)).count()
 }
 
