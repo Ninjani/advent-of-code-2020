@@ -6,7 +6,6 @@ extern crate jemallocator;
 static ALLOC: jemallocator::Jemalloc = jemallocator::Jemalloc;
 
 mod day1;
-// pub mod day2;
 mod day2_fast;
 mod day3;
 mod day4;

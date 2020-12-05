@@ -1,14 +1,14 @@
 use std::cmp::Ordering;
 
 /// With cargo aoc bench:
-/// Generator (min, mean, max): 8.3311 us 8.4984 us 8.7004 us (includes parsing and sorting)
-/// Part 1 (min, mean, max): 255.26 ns 263.05 ns 273.26 ns
-/// Part 2 (min, mean, max): 171.96 ns 177.29 ns 183.14 ns
+/// Generator Day1/(default)  time:   [6.7246 us 6.7619 us 6.8073 us]
+/// Day1 - Part1/(default)  time:   [249.18 ns 250.33 ns 251.93 ns]
+/// Day1 - Part2/(default)  time:   [170.63 ns 175.55 ns 181.44 ns]
 
 #[aoc_generator(day1)]
 pub fn generate(input: &str) -> Vec<isize> {
     let mut array: Vec<isize> = input.lines().map(|i| i.parse().unwrap()).collect();
-    array.sort();
+    array.sort_unstable();
     array
 }
 
