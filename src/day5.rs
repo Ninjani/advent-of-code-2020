@@ -1,4 +1,4 @@
-/// cargo aoc bench results (includes parsing):
+/// cargo aoc bench results:
 /// Day5 - Part1/(default)  time:   [6.5198 us 6.6642 us 6.8384 us]                                                                                               
 /// Day5 - Part2/(default)  time:   [6.8722 us 6.9843 us 7.1139 us]                                    
 
@@ -31,7 +31,7 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        assert_eq!(solve_part1(b"FBFBBFFRLR"), 357);
+        assert_eq!(solve_part1(b"FBFBBFFRLR\nBFFFBBFRRR\nBBFFBBFRLL"), 820);
         assert_eq!(solve_part1(b"BFFFBBFRRR"), 567);
         assert_eq!(solve_part1(b"BBFFBBFRLL"), 820);
     }

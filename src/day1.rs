@@ -1,6 +1,6 @@
 use std::cmp::Ordering;
 
-/// With cargo aoc bench:
+/// cargo aoc bench results:
 /// Generator Day1/(default)  time:   [6.7246 us 6.7619 us 6.8073 us]
 /// Day1 - Part1/(default)  time:   [249.18 ns 250.33 ns 251.93 ns]
 /// Day1 - Part2/(default)  time:   [170.63 ns 175.55 ns 181.44 ns]

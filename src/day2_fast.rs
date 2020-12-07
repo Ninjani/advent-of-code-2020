@@ -24,10 +24,14 @@ pub fn generate(input: &str) -> Vec<Policy> {
                 .split(|b| b == &b' ' || b == &b':')
                 .collect_tuple()
                 .unwrap();
-            let (n1, n2) = n1_n2.split(|b| b == &b'-').collect_tuple().unwrap();
+            let (n1, n2) = n1_n2
+                .split(|b| b == &b'-')
+                .map(|n| std::str::from_utf8(n).unwrap().parse().unwrap())
+                .collect_tuple()
+                .unwrap();
             Policy {
-                n1: std::str::from_utf8(n1).unwrap().parse().unwrap(),
-                n2: std::str::from_utf8(n2).unwrap().parse().unwrap(),
+                n1,
+                n2,
                 letter: letter[0],
                 password: password.to_vec(),
             }
@@ -39,26 +43,22 @@ pub fn generate(input: &str) -> Vec<Policy> {
 pub fn solve_part1(input: &[Policy]) -> usize {
     input
         .iter()
-        .map(|policy| {
-            let count: usize = policy
-                .password
-                .iter()
-                .map(|c| (c == &policy.letter) as usize)
-                .sum();
-            (count >= policy.n1 && count <= policy.n2) as usize
+        .filter(|policy| {
+            let count: usize = bytecount::count(&policy.password, policy.letter);
+            count >= policy.n1 && count <= policy.n2
         })
-        .sum()
+        .count()
 }
 
 #[aoc(day2, part2)]
 pub fn solve_part2(input: &[Policy]) -> usize {
     input
         .iter()
-        .map(|policy| {
-            ((policy.password[policy.n1 - 1] == policy.letter)
-                != (policy.password[policy.n2 - 1] == policy.letter)) as usize
+        .filter(|policy| {
+            (policy.password[policy.n1 - 1] == policy.letter)
+                != (policy.password[policy.n2 - 1] == policy.letter)
         })
-        .sum()
+        .count()
 }
 
 #[cfg(test)]
