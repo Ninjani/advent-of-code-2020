@@ -1,26 +1,26 @@
 use std::collections::{HashMap, HashSet, VecDeque};
 
+/// cargo aoc bench results
+/// Day7 - Part1/(default)  time:   [499.47 us 506.25 us 514.46 us]                                   
+/// Day7 - Part2/(default)  time:   [512.04 us 526.67 us 544.56 us]
+
 #[aoc(day7, part1)]
 pub fn solve_part1(input: &str) -> usize {
     let mut graph = HashMap::new();
-    input.split('\n').for_each(|line| {
-        let mut parts = line.split(" contain ");
-        let start_node = parts.next().unwrap().split(" bag").next().unwrap();
-        let end_nodes = parts.next().unwrap();
-        if end_nodes != "no other bags." {
+    input
+        .split('\n')
+        .filter(|line| !line.ends_with("no other bags."))
+        .for_each(|line| {
+            let (start_node, end_nodes) = line.split_once(" contain ").unwrap();
+            let (start_node, _) = start_node.split_once(" bag").unwrap();
             end_nodes.split(", ").for_each(|end_node| {
+                let (_, end_node) = end_node.split_once(' ').unwrap();
                 graph
-                    .entry(
-                        end_node[end_node.find(' ').unwrap() + 1..]
-                            .split(" bag")
-                            .next()
-                            .unwrap(),
-                    )
+                    .entry(end_node.split(" bag").next().unwrap())
                     .or_insert_with(Vec::new)
                     .push(start_node);
-            })
-        }
-    });
+            });
+        });
     let mut queue = VecDeque::new();
     queue.push_back("shiny gold");
     let mut seen = HashSet::new();
@@ -37,20 +37,20 @@ pub fn solve_part1(input: &str) -> usize {
 #[aoc(day7, part2)]
 pub fn solve_part2(input: &str) -> usize {
     let mut graph = HashMap::new();
-    input.split('\n').for_each(|line| {
-        let mut parts = line.split(" contain ");
-        let start_node = parts.next().unwrap().split(" bag").next().unwrap();
-        let end_nodes = parts.next().unwrap();
-        if end_nodes != "no other bags." {
+    input
+        .split('\n')
+        .filter(|line| !line.ends_with("no other bags."))
+        .for_each(|line| {
+            let (start_node, end_nodes) = line.split_once(" contain ").unwrap();
+            let (start_node, _) = start_node.split_once(" bag").unwrap();
             end_nodes.split(", ").for_each(|end_node| {
-                let index = end_node.find(' ').unwrap();
+                let (weight, end_node) = end_node.split_once(' ').unwrap();
                 graph.entry(start_node).or_insert_with(Vec::new).push((
-                    end_node[index + 1..].split(" bag").next().unwrap(),
-                    end_node[..index].parse::<usize>().unwrap(),
+                    end_node.split(" bag").next().unwrap(),
+                    weight.parse::<usize>().unwrap(),
                 ));
-            })
-        }
-    });
+            });
+        });
     let mut queue = VecDeque::new();
     queue.push_back(("shiny gold", 1));
     let mut total = 0;
