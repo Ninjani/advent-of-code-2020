@@ -1,6 +1,6 @@
 /// cargo aoc bench results
 /// Day4 - Part1/(default)  time:   [37.780 us 38.036 us 38.333 us]                      
-/// Day4 - Part2/(default)  time:   [61.580 us 64.620 us 69.062 us]                                                                        
+/// Day4 - Part2/(default)  time:   [56.264 us 56.593 us 56.987 us]                                                                     
 
 #[inline(always)]
 pub fn generate(input: &str) -> Vec<[Option<&str>; 7]> {
@@ -54,18 +54,18 @@ fn validate(passport: &[Option<&str>; 7]) -> bool {
                 && hcl.chars().skip(1).all(char::is_alphanumeric)
                 && byr
                     .parse::<u32>()
-                    .map_or(false, |byr| byr >= 1920 && byr <= 2002)
+                    .map_or(false, |byr| (1920..=2002).contains(&byr))
                 && iyr
                     .parse::<u32>()
-                    .map_or(false, |iyr| iyr >= 2010 && iyr <= 2020)
+                    .map_or(false, |iyr| (2010..=2020).contains(&iyr))
                 && eyr
                     .parse::<u32>()
-                    .map_or(false, |eyr| eyr >= 2020 && eyr <= 2030)
+                    .map_or(false, |eyr| (2020..=2030).contains(&eyr))
                 && ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"].contains(&ecl)
                 && hgt[..hgt.len() - 2].parse::<u8>().map_or(false, |height| {
                     match &hgt[hgt.len() - 2..] {
-                        "cm" => height >= 150 && height <= 193,
-                        "in" => height >= 59 && height <= 76,
+                        "cm" => (150..=193).contains(&height),
+                        "in" => (59..=76).contains(&height),
                         _ => false,
                     }
                 })
