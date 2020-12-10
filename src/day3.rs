@@ -1,13 +1,12 @@
 /// cargo aoc bench results
-/// Generator Day3/(default) time:   [29.794 us 31.944 us 35.957 us]
-/// Day3 - Part1/(default)  time:   [1.6591 us 1.6680 us 1.6802 us]                                    
-/// Day3 - Part2/(default)  time:   [7.6617 us 7.8717 us 8.1627 us]                                    
+/// Day3 - Part1/(default)  time:   [27.890 us 28.047 us 28.248 us]
+/// Day3 - Part2/(default)  time:   [41.501 us 42.095 us 42.740 us]                                  
 
-#[aoc_generator(day3)]
-pub fn generate(input: &str) -> Vec<Vec<bool>> {
+#[inline(always)]
+pub fn generate(input: &[u8]) -> Vec<Vec<bool>> {
     input
-        .lines()
-        .map(|line| line.bytes().map(|c| c == b'#').collect())
+        .split(|&b| b == b'\n')
+        .map(|line| line.iter().map(|&c| c == b'#').collect())
         .collect()
 }
 
@@ -22,15 +21,17 @@ fn check_slope(input: &[Vec<bool>], slope_i: usize, slope_j: usize) -> usize {
 }
 
 #[aoc(day3, part1)]
-pub fn solve_part1(input: &[Vec<bool>]) -> usize {
-    check_slope(input, 3, 1)
+pub fn solve_part1(input: &[u8]) -> usize {
+    let input = generate(input);
+    check_slope(&input, 3, 1)
 }
 
 #[aoc(day3, part2)]
-pub fn solve_part2(input: &[Vec<bool>]) -> usize {
+pub fn solve_part2(input: &[u8]) -> usize {
+    let input = generate(input);
     vec![(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)]
         .into_iter()
-        .map(|(slope_i, slope_j)| check_slope(input, slope_i, slope_j))
+        .map(|(slope_i, slope_j)| check_slope(&input, slope_i, slope_j))
         .product()
 }
 
@@ -40,13 +41,13 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        let input = generate("..##.......\n#...#...#..\n.#....#..#.\n..#.#...#.#\n.#...##..#.\n..#.##.....\n.#.#.#....#\n.#........#\n#.##...#...\n#...##....#\n.#..#...#.#");
+        let input = b"..##.......\n#...#...#..\n.#....#..#.\n..#.#...#.#\n.#...##..#.\n..#.##.....\n.#.#.#....#\n.#........#\n#.##...#...\n#...##....#\n.#..#...#.#";
         assert_eq!(solve_part1(&input), 7);
     }
 
     #[test]
     fn test_part2() {
-        let input = generate("..##.......\n#...#...#..\n.#....#..#.\n..#.#...#.#\n.#...##..#.\n..#.##.....\n.#.#.#....#\n.#........#\n#.##...#...\n#...##....#\n.#..#...#.#");
+        let input = b"..##.......\n#...#...#..\n.#....#..#.\n..#.#...#.#\n.#...##..#.\n..#.##.....\n.#.#.#....#\n.#........#\n#.##...#...\n#...##....#\n.#..#...#.#";
         assert_eq!(solve_part2(&input), 336);
     }
 }

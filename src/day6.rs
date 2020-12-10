@@ -1,3 +1,7 @@
+/// cargo aoc bench results
+/// Day6 - Part1/(default)  time:   [35.738 us 41.260 us 48.437 us]
+/// Day6 - Part2/(default)  time:   [39.867 us 40.374 us 40.922 us]
+
 #[aoc(day6, part1)]
 pub fn solve_part1(input: &[u8]) -> u32 {
     let (total, group, _) =
