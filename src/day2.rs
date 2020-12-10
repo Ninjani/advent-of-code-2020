@@ -60,12 +60,12 @@ mod tests {
     #[test]
     fn test_part1() {
         let input = b"1-3 a: abcde\n1-3 b: cdefg\n2-9 c: ccccccccc";
-        assert_eq!(solve_part1(&input), 2);
+        assert_eq!(solve_part1(input), 2);
     }
 
     #[test]
     fn test_part2() {
         let input = b"1-3 a: abcde\n1-3 b: cdefg\n2-9 c: ccccccccc";
-        assert_eq!(solve_part2(&input), 1);
+        assert_eq!(solve_part2(input), 1);
     }
 }

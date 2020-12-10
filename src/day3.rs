@@ -42,12 +42,12 @@ mod tests {
     #[test]
     fn test_part1() {
         let input = b"..##.......\n#...#...#..\n.#....#..#.\n..#.#...#.#\n.#...##..#.\n..#.##.....\n.#.#.#....#\n.#........#\n#.##...#...\n#...##....#\n.#..#...#.#";
-        assert_eq!(solve_part1(&input), 7);
+        assert_eq!(solve_part1(input), 7);
     }
 
     #[test]
     fn test_part2() {
         let input = b"..##.......\n#...#...#..\n.#....#..#.\n..#.#...#.#\n.#...##..#.\n..#.##.....\n.#.#.#....#\n.#........#\n#.##...#...\n#...##....#\n.#..#...#.#";
-        assert_eq!(solve_part2(&input), 336);
+        assert_eq!(solve_part2(input), 336);
     }
 }

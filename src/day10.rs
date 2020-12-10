@@ -61,7 +61,7 @@ mod tests {
 6
 12
 4"#;
-        assert_eq!(solve_part1(&input), 35);
+        assert_eq!(solve_part1(input), 35);
         let input = br#"28
 33
 18
@@ -93,7 +93,7 @@ mod tests {
 34
 10
 3"#;
-        assert_eq!(solve_part1(&input), 220);
+        assert_eq!(solve_part1(input), 220);
     }
 
     #[test]
@@ -109,7 +109,7 @@ mod tests {
 6
 12
 4"#;
-        assert_eq!(solve_part2(&input), 8);
+        assert_eq!(solve_part2(input), 8);
         let input = br#"28
 33
 18
@@ -141,6 +141,6 @@ mod tests {
 34
 10
 3"#;
-        assert_eq!(solve_part2(&input), 19208);
+        assert_eq!(solve_part2(input), 19208);
     }
 }

@@ -63,18 +63,18 @@ mod tests {
     #[test]
     fn test_part1() {
         let input = b"1721\n979\n366\n299\n675\n1456";
-        assert_eq!(solve_part1(&input), 514579);
+        assert_eq!(solve_part1(input), 514579);
     }
 
     #[test]
     fn test_part2() {
         let input = b"1721\n979\n366\n299\n675\n1456";
-        assert_eq!(solve_part2(&input), 241861950);
+        assert_eq!(solve_part2(input), 241861950);
     }
 
     #[test]
     fn test_half() {
         let input = b"1010\n2020\n0\n299\n670\n14";
-        assert_eq!(solve_part1(&input), 0);
+        assert_eq!(solve_part1(input), 0);
     }
 }
