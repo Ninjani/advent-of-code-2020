@@ -3,9 +3,9 @@ use itertools::Itertools;
 use std::cmp::Ordering;
 
 /// cargo aoc bench results
-/// Day9 - Part1/(default)  time:   [31.114 us 32.278 us 33.553 us]
-/// Day9 - Part2/(default)  time:   [32.907 us 33.136 us 33.414 us]
-/// Day9 - Part2/prefix_sum time:   [34.843 us 36.813 us 38.980 us]
+/// Day9 - Part1/(default)  time:   [30.626 us 31.682 us 33.012 us]    
+/// Day9 - Part2/(default)  time:   [553.12 ns 560.96 ns 569.68 ns] (without parsing and Part 1)
+/// Day9 - Part2/prefix_sum time:   [1.7565 us 1.7764 us 1.7990 us] (without parsing and Part 1)
 
 #[inline(always)]
 fn first_wrong_solve(numbers: &[usize], preamble_size: usize) -> usize {
@@ -33,6 +33,7 @@ pub fn solve_part1(input: &[u8]) -> usize {
 #[inline(always)]
 fn sliding_window_solve(input: &[usize], sum: usize) -> usize {
     let mut current_sum = input[0];
+    let length = input.len();
     let (mut start, mut end) = (0, 1);
     loop {
         while current_sum > sum && start < end - 1 {
@@ -43,7 +44,7 @@ fn sliding_window_solve(input: &[usize], sum: usize) -> usize {
             let (min, max) = input[start..end].iter().minmax().into_option().unwrap();
             return min + max;
         }
-        while current_sum < sum && end < input.len() - 1 {
+        while current_sum < sum && end < length - 1 {
             current_sum += input[end];
             end += 1;
         }
@@ -72,16 +73,25 @@ fn prefix_sum_solve(input: &[usize], sum: usize) -> usize {
     min + max
 }
 
+fn get_input() -> &'static [u8] {
+    include_bytes!("../input/2020/day9.txt")
+}
+
+#[ctor::ctor]
+static PART_1: usize = solve_part1(get_input());
+#[ctor::ctor]
+static PART_2_INPUT: Vec<usize> = parse_usizes(get_input());
+
 #[aoc(day9, part2)]
-pub fn solve_part2(input: &[u8]) -> usize {
-    let input = parse_usizes(input);
-    sliding_window_solve(&input, first_wrong_solve(&input, 25))
+pub fn solve_part2(_: &[u8]) -> usize {
+    // let input = parse_usizes(input);
+    sliding_window_solve(&PART_2_INPUT, *PART_1)
 }
 
 #[aoc(day9, part2, prefix_sum)]
-pub fn solve_part2_prefix_sum(input: &[u8]) -> usize {
-    let input = parse_usizes(input);
-    prefix_sum_solve(&input, first_wrong_solve(&input, 25))
+pub fn solve_part2_prefix_sum(_: &[u8]) -> usize {
+    // let input = parse_usizes(input);
+    prefix_sum_solve(&PART_2_INPUT, *PART_1)
 }
 
 #[cfg(test)]
